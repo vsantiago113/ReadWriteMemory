@@ -1,6 +1,6 @@
-__version__ = 1.1
-
-import os.path, ctypes, ctypes.wintypes
+import os.path
+import ctypes
+import ctypes.wintypes
 
 #Process Permissions
 PROCESS_QUERY_INFORMATION = (0x0400)
@@ -20,14 +20,14 @@ class ReadWriteMemory:
             
         ProcessIds, BytesReturned = self.EnumProcesses()
 
-        for index in range(BytesReturned / ctypes.sizeof(ctypes.wintypes.DWORD)):
+        for index in list(range(int(BytesReturned / ctypes.sizeof(ctypes.wintypes.DWORD)))):
             ProcessId = ProcessIds[index]
             hProcess = ctypes.windll.kernel32.OpenProcess(PROCESS_QUERY_INFORMATION, False, ProcessId)
             if hProcess:
                 ImageFileName = (ctypes.c_char*MAX_PATH)()
                 if ctypes.windll.psapi.GetProcessImageFileNameA(hProcess, ImageFileName, MAX_PATH)>0:
                     filename = os.path.basename(ImageFileName.value)
-                    if filename == pName:
+                    if filename.decode('utf-8') == pName:
                         return ProcessId
                 self.CloseHandle(hProcess)
 
