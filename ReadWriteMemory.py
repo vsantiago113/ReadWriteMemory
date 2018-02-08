@@ -2,13 +2,14 @@ import os.path
 import ctypes
 import ctypes.wintypes
 
-#Process Permissions
-PROCESS_QUERY_INFORMATION = (0x0400)
-PROCESS_VM_OPERATION = (0x0008)
-PROCESS_VM_READ = (0x0010)
-PROCESS_VM_WRITE = (0x0020)
+# Process Permissions
+PROCESS_QUERY_INFORMATION = 0x0400
+PROCESS_VM_OPERATION = 0x0008
+PROCESS_VM_READ = 0x0010
+PROCESS_VM_WRITE = 0x0020
 
-MAX_PATH = (260)
+MAX_PATH = 260
+
 
 class ReadWriteMemory:
 
@@ -25,7 +26,7 @@ class ReadWriteMemory:
             hProcess = ctypes.windll.kernel32.OpenProcess(PROCESS_QUERY_INFORMATION, False, ProcessId)
             if hProcess:
                 ImageFileName = (ctypes.c_char*MAX_PATH)()
-                if ctypes.windll.psapi.GetProcessImageFileNameA(hProcess, ImageFileName, MAX_PATH)>0:
+                if ctypes.windll.psapi.GetProcessImageFileNameA(hProcess, ImageFileName, MAX_PATH) > 0:
                     filename = os.path.basename(ImageFileName.value)
                     if filename.decode('utf-8') == pName:
                         return ProcessId
@@ -38,9 +39,8 @@ class ReadWriteMemory:
             cb = ctypes.sizeof(ProcessIds)
             BytesReturned = ctypes.wintypes.DWORD()
             if ctypes.windll.Psapi.EnumProcesses(ctypes.byref(ProcessIds), cb, ctypes.byref(BytesReturned)):
-                if BytesReturned.value<cb:
+                if BytesReturned.value < cb:
                     return ProcessIds, BytesReturned.value
-                    break
                 else:
                     count *= 2
             else:
@@ -49,7 +49,7 @@ class ReadWriteMemory:
     def OpenProcess(self, dwProcessId):
         dwDesiredAccess = (PROCESS_QUERY_INFORMATION |
                            PROCESS_VM_OPERATION |
-                           PROCESS_VM_READ | PROCESS_VM_WRITE);
+                           PROCESS_VM_READ | PROCESS_VM_WRITE)
         bInheritHandle = False
         hProcess = ctypes.windll.kernel32.OpenProcess(
                                                     dwDesiredAccess,
@@ -62,7 +62,7 @@ class ReadWriteMemory:
             return None
 
     def CloseHandle(self, hProcess):
-        ctypes.windll.kernel32.CloseHandle(hProcess);
+        ctypes.windll.kernel32.CloseHandle(hProcess)
         return self.GetLastError()
 
     def GetLastError(self):
@@ -147,5 +147,6 @@ class ReadWriteMemory:
             self.CloseHandle(hProcess)
             e = 'Handle Closed, Error', hProcess, self.GetLastError()
             return e
+
 
 rwm = ReadWriteMemory()
