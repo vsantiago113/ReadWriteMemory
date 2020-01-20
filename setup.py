@@ -1,0 +1,26 @@
+from distutils.core import setup
+
+setup(name='ReadWriteMemory',
+      version='0.1.2',
+      description='ReadWriteMemory wrapper to work with Windows Processes Memory.',
+      author='Victor M Santiago',
+      author_email='vsantiago113sec@gmail.com',
+      url='https://github.com/vsantiago113',
+      download_url='https://github.com/vsantiago113/ReadWriteMemory',
+      license="MIT",
+      packages=['ReadWriteMemory'],
+      classifiers=[
+          "Development Status :: 4 - Beta",
+          "Topic :: Utilities",
+          'Topic :: Games/Entertainment',
+          "License :: OSI Approved :: MIT License",
+          'Operating System :: Microsoft :: Windows',
+          'Programming Language :: Python',
+          'Intended Audience :: Developers',
+          'Programming Language :: Python :: 3.4',
+          'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: 3.7',
+          'Programming Language :: Python :: 3.8',
+      ],
+      )
