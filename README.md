@@ -35,7 +35,7 @@ rwm = ReadWriteMemory()
 
 ---
 
-### Get the process PID by the process name
+### Get the process PID by the process name - ReadWriMemory.get_process_id_by_name(process_name: str)
 
 ```python
 from ReadWriteMemory import ReadWriteMemory
@@ -44,3 +44,5 @@ rwm = ReadWriteMemory()
 
 pid = rwm.get_process_id_by_name('ac_client.exe')
 ```
+
+### How to open the process - ReadWriMemory.open()
