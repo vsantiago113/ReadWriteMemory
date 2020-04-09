@@ -1,7 +1,7 @@
 from distutils.core import setup
 
 setup(name='ReadWriteMemory',
-      version='0.1.4',
+      version='0.1.3',
       description='ReadWriteMemory Class to work with Windows process memory and hacking video games.',
       author='Victor M Santiago',
       author_email='vsantiago113sec@gmail.com',
