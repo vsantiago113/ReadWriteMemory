@@ -9,7 +9,7 @@ __pycache__/
 # Distribution / packaging
 .Python
 env/
-build/
+Test/build/
 develop-eggs/
 dist/
 downloads/
@@ -100,5 +100,5 @@ ENV/
 # mypy
 .mypy_cache/
 
-#PyCharm
+# PyCharm
 .idea/

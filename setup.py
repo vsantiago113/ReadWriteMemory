@@ -1,8 +1,8 @@
 from distutils.core import setup
 
 setup(name='ReadWriteMemory',
-      version='0.1.2',
-      description='ReadWriteMemory wrapper to work with Windows Processes Memory.',
+      version='0.1.4',
+      description='ReadWriteMemory Class to work with Windows process memory and hacking video games.',
       author='Victor M Santiago',
       author_email='vsantiago113sec@gmail.com',
       python_requires='>=3.4.0',
