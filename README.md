@@ -1,7 +1,7 @@
 # ReadWriteMemory
 
 ### Description
-The ReadWriteMemory Class is made on Python for reading and writing to the memory of any process. This Class does not depend any extra modules only uses standard Python lib’s like ctypes.
+The ReadWriteMemory Class is made on Python for reading and writing to the memory of any process. This Class does not depend on any extra modules and only uses standard Python libraries like ctypes.
 
 ---
 
