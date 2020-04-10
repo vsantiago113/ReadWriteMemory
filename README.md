@@ -45,6 +45,11 @@ process = rwm.get_process_by_name('ac_client.exe')
 process = rwm.get_process_by_name(1337)
 ```
 
+### Get the list of running processes ID's from the current system
+```python
+processes_ids = rwm.enumerate_processes()
+```
+
 ### Print the Process information
 ```python
 print(process.__dict__)
@@ -54,6 +59,23 @@ print(process.__dict__)
 ```python
 help(process)
 ```
+
+### To check if the process is running. This method is a property and does not required the () at the end.
+```python
+if process.is_running:
+    print('The process is running.')
+else:
+    print('The process is not running')
+```
+
+### Exception: ReadWriteMemoryError
+````python
+from ReadWriteMemory import ReadWriteMemoryError
+try:
+    process = rwm.get_process_by_name('ac_client.exe')
+except ReadWriteMemoryError as error:
+    print(error)
+````
 
 ### Open the Process
 To be able to read or write to the process's memory first you need to call the open() method.
