@@ -27,7 +27,7 @@ OS: Windows 7, 8 and 10<br />
 
 ### Import the Class
 ```python
-from ReadWriteMemory import ReadWriteMemory
+from Test.ReadWriteMemory import ReadWriteMemory
 ```
 
 ### Instantiate the Class
@@ -60,17 +60,9 @@ print(process.__dict__)
 help(process)
 ```
 
-### To check if the process is running. This method is a property and does not required the () at the end.
-```python
-if process.is_running:
-    print('The process is running.')
-else:
-    print('The process is not running')
-```
-
 ### Exception: ReadWriteMemoryError
 ````python
-from ReadWriteMemory import ReadWriteMemoryError
+from Test.ReadWriteMemory import ReadWriteMemoryError
 try:
     process = rwm.get_process_by_name('ac_client.exe')
 except ReadWriteMemoryError as error:
@@ -122,7 +114,7 @@ The AssaultCube game used for this test is version v1.1.0.4 If you use a differe
 For more examples check out the AssaultCube game trainer:
 [https://github.com/vsantiago113/ACTrainer](https://github.com/vsantiago113/ACTrainer)
 ```python
-from ReadWriteMemory import ReadWriteMemory
+from Test.ReadWriteMemory import ReadWriteMemory
 from random import randint
 
 rwm = ReadWriteMemory()

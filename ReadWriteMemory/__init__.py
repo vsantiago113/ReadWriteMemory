@@ -35,7 +35,7 @@ class Process(object):
     def __repr__(self) -> str:
         return f'{self.__class__.__name__}: "{self.name}"'
 
-    def open(self) -> bool:
+    def open(self):
         """
         Open the process with the Query, Operation, Read and Write permissions and return the process handle.
 
@@ -44,10 +44,8 @@ class Process(object):
         dw_desired_access = (PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE)
         b_inherit_handle = False
         self.handle = ctypes.windll.kernel32.OpenProcess(dw_desired_access, b_inherit_handle, self.pid)
-        if self.handle:
-            return True
-        else:
-            return False
+        if not self.handle:
+            raise ReadWriteMemoryError(f'Unable to open process <{self.name}>')
 
     def close(self) -> int:
         """
@@ -66,21 +64,6 @@ class Process(object):
         :return: The last error code.
         """
         return ctypes.windll.kernel32.GetLastError()
-
-    @property
-    def is_running(self):
-        """
-        Check if the process is still running.
-
-        :note: If the process ID changed this method will return False and a new handle need to be created.
-
-        :return: True if the process is running and False if is not running or the process ID changed.
-        """
-        self.handle = ctypes.windll.kernel32.OpenProcess(PROCESS_QUERY_INFORMATION, False, self.pid)
-        if self.handle:
-            return True
-        else:
-            return False
 
     def get_pointer(self, lp_base_address: hex, offsets: List[hex] = ()) -> int:
         """
