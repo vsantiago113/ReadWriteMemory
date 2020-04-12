@@ -5,6 +5,10 @@ The ReadWriteMemory Class is made on Python for reading and writing to the memor
 
 ---
 
+### [Documentation](https://vsantiago113.github.io/readwritememory.github.io/)
+
+---
+
 ### Requirements
 Python 3.4+<br />
 OS: Windows 7, 8 and 10<br />
