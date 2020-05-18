@@ -1,4 +1,9 @@
 # ReadWriteMemory
+![PyPI - Status](https://img.shields.io/pypi/status/ReadWriteMemory)
+![PyPI - Format](https://img.shields.io/pypi/format/ReadWriteMemory)
+![GitHub](https://img.shields.io/github/license/vsantiago113/ReadWriteMemory)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/vsantiago113/ReadWriteMemory)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/ReadWriteMemory)
 
 ### Description
 The ReadWriteMemory Class is made on Python for reading and writing to the memory of any process. This Class does not depend on any extra modules and only uses standard Python libraries like ctypes.
