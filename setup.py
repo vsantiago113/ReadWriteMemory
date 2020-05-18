@@ -13,7 +13,7 @@ setup(name='ReadWriteMemory',
       author='Victor M Santiago',
       author_email='vsantiago113sec@gmail.com',
       url='https://github.com/vsantiago113/ReadWriteMemory',
-      download_url='',
+      download_url='https://github.com/vsantiago113/ReadWriteMemory/archive/0.1.5.zip',
       keywords=['ReadWriteMemory', 'Hacking', 'Cheat Engine'],
       python_requires='>=3.4.0',
       classifiers=[
