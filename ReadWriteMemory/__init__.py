@@ -20,7 +20,7 @@ class Process(object):
     """
     The Process class holds the information about the requested process.
     """
-    def __init__(self, name: str = '', pid: int = -1, handle: int = -1, error_code: str = None):
+    def __init__(self, name: [str, bytes] = '', pid: int = -1, handle: int = -1, error_code: [str, bytes] = None):
         """
         :param name: The name of the executable file for the specified process.
         :param pid: The process ID.
@@ -141,7 +141,7 @@ class ReadWriteMemory:
     def __init__(self):
         self.process = Process()
 
-    def get_process_by_name(self, process_name: str) -> "Process":
+    def get_process_by_name(self, process_name: [str, bytes]) -> "Process":
         """
         :description: Get the process by the process executabe\'s name and return a Process object.
 
