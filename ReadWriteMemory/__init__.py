@@ -59,7 +59,7 @@ class Process(object):
    
     def get_all_access_handle(self) -> int:
         """
-        Gets the handle of the process.
+        Gets full access handle of the process.
 
         :return: handle of the process
         """
