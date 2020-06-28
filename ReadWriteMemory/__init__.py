@@ -8,6 +8,7 @@ PROCESS_QUERY_INFORMATION = 0x0400
 PROCESS_VM_OPERATION = 0x0008
 PROCESS_VM_READ = 0x0010
 PROCESS_VM_WRITE = 0x0020
+PROCESS_ALL_ACCESS = 0x1f0fff
 
 MAX_PATH = 260
 
@@ -55,7 +56,15 @@ class Process(object):
         """
         ctypes.windll.kernel32.CloseHandle(self.handle)
         return self.get_last_error()
+   
+    def get_all_access_handle(self) -> int:
+        """
+        Gets full access handle of the process.
 
+        :return: handle of the process
+        """
+        self.handle = ctypes.windll.kernel32.OpenProcess(PROCESS_ALL_ACCESS, True, self.pid)
+    
     @staticmethod
     def get_last_error() -> int:
         """
