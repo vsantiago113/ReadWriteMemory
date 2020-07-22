@@ -43,7 +43,7 @@ class Process(object):
         :return: True if the handle exists if not return False
         """
         dw_desired_access = (PROCESS_QUERY_INFORMATION | PROCESS_VM_OPERATION | PROCESS_VM_READ | PROCESS_VM_WRITE)
-        b_inherit_handle = False
+        b_inherit_handle = True
         self.handle = ctypes.windll.kernel32.OpenProcess(dw_desired_access, b_inherit_handle, self.pid)
         if not self.handle:
             raise ReadWriteMemoryError(f'Unable to open process <{self.name}>')
@@ -57,13 +57,14 @@ class Process(object):
         ctypes.windll.kernel32.CloseHandle(self.handle)
         return self.get_last_error()
    
-    def get_all_access_handle(self) -> int:
+    def get_all_access_handle(self):
         """
         Gets full access handle of the process.
 
         :return: handle of the process
         """
-        self.handle = ctypes.windll.kernel32.OpenProcess(PROCESS_ALL_ACCESS, True, self.pid)
+        b_inherit_handle = True
+        self.handle = ctypes.windll.kernel32.OpenProcess(PROCESS_ALL_ACCESS, b_inherit_handle, self.pid)
     
     @staticmethod
     def get_last_error() -> int:
