@@ -107,7 +107,7 @@ class Process(object):
             lp_buffer = ctypes.byref(read_buffer)
             n_size = ctypes.sizeof(read_buffer)
             lp_number_of_bytes_read = ctypes.c_ulong(0)
-            ctypes.windll.kernel32.ReadProcessMemory(self.handle, lp_base_address, lp_buffer,
+            ctypes.windll.kernel32.ReadProcessMemory(self.handle, ctypes.c_void_p(lp_base_address), lp_buffer,
                                                      n_size, lp_number_of_bytes_read)
             return read_buffer.value
         except (BufferError, ValueError, TypeError) as error:
@@ -132,7 +132,7 @@ class Process(object):
             lp_buffer = ctypes.byref(write_buffer)
             n_size = ctypes.sizeof(write_buffer)
             lp_number_of_bytes_written = ctypes.c_ulong(0)
-            ctypes.windll.kernel32.WriteProcessMemory(self.handle, lp_base_address, lp_buffer,
+            ctypes.windll.kernel32.WriteProcessMemory(self.handle, ctypes.c_void_p(lp_base_address), lp_buffer,
                                                       n_size, lp_number_of_bytes_written)
             return True
         except (BufferError, ValueError, TypeError) as error:

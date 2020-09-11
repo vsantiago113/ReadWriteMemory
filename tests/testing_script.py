@@ -1,4 +1,4 @@
-from Test.ReadWriteMemory import ReadWriteMemory
+from ReadWriteMemory import ReadWriteMemory
 from random import randint
 
 rwm = ReadWriteMemory()
