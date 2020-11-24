@@ -118,6 +118,33 @@ class Process(object):
                      'Name': self.name, 'ErrorCode': self.error_code}
             ReadWriteMemoryError(error)
 
+    def readString(self, lp_base_address: int, length: int) -> Any:
+        """
+        Read data from the process's memory.
+
+        :param lp_base_address: The process's pointer
+        :param length: The length of string
+
+        :return: The data from the process's memory if succeed if not raises an exception.
+        """
+        try:
+            read_buffer = ctypes.create_string_buffer(length)
+            lp_number_of_bytes_read = ctypes.c_ulong(0)
+            ctypes.windll.kernel32.ReadProcessMemory(self.handle, lp_base_address, read_buffer, length, lp_number_of_bytes_read)
+            bufferArray = bytearray(read_buffer)
+            found_terminator = bufferArray.find(b'\x00')
+            if found_terminator != -1:
+                return bufferArray[:found_terminator].decode('utf-8')
+            print("[ReadMemory/Error]: terminator not found.\naddress: %s" % hex(lp_base_address))
+            return ""
+        except (BufferError, ValueError, TypeError) as error:
+            if self.handle:
+                self.close()
+            self.error_code = self.get_last_error()
+            error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
+                     'Name': self.name, 'ErrorCode': self.error_code}
+            ReadWriteMemoryError(error)
+
     def write(self, lp_base_address: int, value: int) -> bool:
         """
         Write data to the process's memory.
@@ -143,6 +170,30 @@ class Process(object):
                      'Name': self.name, 'ErrorCode': self.error_code}
             ReadWriteMemoryError(error)
 
+    def writeString(self, lp_base_address: int, string: str) -> bool:
+        """
+        Write data to the process's memory.
+
+        :param lp_base_address: The process' pointer.
+        :param string: The string to be written to the process's memory
+
+        :return: It returns True if succeed if not it raises an exception.
+        """
+        try:
+            write_buffer = ctypes.create_string_buffer(value.encode())
+            lp_buffer = ctypes.byref(write_buffer)
+            n_size = ctypes.sizeof(write_buffer)
+            lp_number_of_bytes_written = ctypes.c_size_t()
+            ctypes.windll.kernel32.WriteProcessMemory(self.handle, lp_base_address, lp_buffer,
+                                                        n_size, lp_number_of_bytes_written)
+            return True
+        except (BufferError, ValueError, TypeError) as error:
+            if self.handle:
+                self.close()
+            self.error_code = self.get_last_error()
+            error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
+                     'Name': self.name, 'ErrorCode': self.error_code}
+            ReadWriteMemoryError(error)
 
 class ReadWriteMemory:
     """
