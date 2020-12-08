@@ -1,4 +1,4 @@
-from typing import Any,  List, NewType
+from typing import Any,  List
 import os.path
 import ctypes
 import ctypes.wintypes
