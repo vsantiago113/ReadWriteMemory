@@ -252,6 +252,28 @@ class ReadWriteMemory:
     def __init__(self):
         self.process = Process()
 
+    @staticmethod
+    def set_privileges():
+        import win32con
+        import win32api
+        import win32security
+        import ntsecuritycon
+        from ntsecuritycon import TokenPrivileges
+
+        remote_server = None
+        th = win32security.OpenProcessToken(win32api.GetCurrentProcess(), win32con.TOKEN_ADJUST_PRIVILEGES | win32con.TOKEN_QUERY)
+        privs = win32security.GetTokenInformation(th, TokenPrivileges)
+        newprivs = []
+        for privtuple in privs:
+            if privtuple[0] == win32security.LookupPrivilegeValue(remote_server, "SeBackupPrivilege") or privtuple[0] == win32security.LookupPrivilegeValue(remote_server, "SeDebugPrivilege") or privtuple[0] == win32security.LookupPrivilegeValue(remote_server, "SeSecurityPrivilege"):
+                #print("Added privilege " + str(privtuple[0]))
+                newprivs.append((privtuple[0], 2))
+            else:
+                newprivs.append((privtuple[0], privtuple[1]))       
+        # Adjust privs
+        privs = tuple(newprivs)
+        win32security.AdjustTokenPrivileges(th, False , privs)
+
     def get_process_by_name(self, process_name: [str, bytes]) -> "Process":
         """
         :description: Get the process by the process executabe\'s name and return a Process object.
