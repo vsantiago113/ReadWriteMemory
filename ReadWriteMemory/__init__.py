@@ -261,18 +261,8 @@ class ReadWriteMemory:
         from ntsecuritycon import TokenPrivileges
 
         remote_server = None
-        th = win32security.OpenProcessToken(win32api.GetCurrentProcess(), win32con.TOKEN_ADJUST_PRIVILEGES | win32con.TOKEN_QUERY)
-        privs = win32security.GetTokenInformation(th, TokenPrivileges)
-        newprivs = []
-        for privtuple in privs:
-            if privtuple[0] == win32security.LookupPrivilegeValue(remote_server, "SeBackupPrivilege") or privtuple[0] == win32security.LookupPrivilegeValue(remote_server, "SeDebugPrivilege") or privtuple[0] == win32security.LookupPrivilegeValue(remote_server, "SeSecurityPrivilege"):
-                #print("Added privilege " + str(privtuple[0]))
-                newprivs.append((privtuple[0], 2))
-            else:
-                newprivs.append((privtuple[0], privtuple[1]))       
-        # Adjust privs
-        privs = tuple(newprivs)
-        win32security.AdjustTokenPrivileges(th, False , privs)
+        token = win32security.OpenProcessToken(win32api.GetCurrentProcess(), win32con.TOKEN_ADJUST_PRIVILEGES | win32con.TOKEN_QUERY)
+        win32security.AdjustTokenPrivileges(token, False, ((p[0], 2) if p[0] == win32security.LookupPrivilegeValue(remote_server, "SeBackupPrivilege") or p[0] == win32security.LookupPrivilegeValue(remote_server, "SeDebugPrivilege") or p[0] == win32security.LookupPrivilegeValue(remote_server, "SeSecurityPrivilege") else (p[0], p[1]) for p in win32security.GetTokenInformation(token, TokenPrivileges)))
 
     def get_process_by_name(self, process_name: [str, bytes]) -> "Process":
         """
