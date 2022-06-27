@@ -21,7 +21,7 @@ class Process(object):
     """
     The Process class holds the information about the requested process.
     """
-    def __init__(self, name: [str, bytes] = '', pid: int = -1, handle: int = -1, error_code: [str, bytes] = None):
+    def __init__(self, name: str = '', pid: int = -1, handle: int = -1, error_code: str = None):
         """
         :param name: The name of the executable file for the specified process.
         :param pid: The process ID.
@@ -93,6 +93,25 @@ class Process(object):
                 pointer = int(str(temp_address), 0) + int(str(offset), 0)
                 temp_address = self.read(pointer)
             return pointer
+        
+    def get_modules(self) -> List[int]:
+        """
+        Get the process's modules.
+        :return: A list of the process's modules adresses in decimal.
+        :return: An empty list if the process is not open.
+        """
+        modules = (ctypes.wintypes.HMODULE * MAX_PATH)()
+        ctypes.windll.psapi.EnumProcessModules(self.handle, modules, ctypes.sizeof(modules), None)
+        return [x for x in tuple(modules) if x != None]
+
+    def thread(self, address: int):
+        """
+        Create a remote thread to the address.
+        If you don't know what you're doing, the process can crash.
+        """
+        ctypes.windll.kernel32.CreateRemoteThread(self.handle, 0, 0, address, 0, 0, 0)
+        self.close()    #the thread stays in the process
+        self.open()     #just for better code understanding
 
     def read(self, lp_base_address: int) -> Any:
         """
@@ -157,12 +176,8 @@ class Process(object):
             lp_buffer = ctypes.byref(read_buffer)
             n_size = ctypes.sizeof(read_buffer)
             lp_number_of_bytes_read = ctypes.c_ulong(0)
-            bytes = []
-            for x in range(length):
-                ctypes.windll.kernel32.ReadProcessMemory(self.handle, ctypes.c_void_p(lp_base_address + x), lp_buffer,
-                                                         n_size, lp_number_of_bytes_read)
-                bytes.append(hex(read_buffer.value))
-            return bytes
+            return [hex(read_buffer.value) for x in range(length) if ctypes.windll.kernel32.ReadProcessMemory(self.handle, ctypes.c_void_p(lp_base_address + x), lp_buffer, n_size, lp_number_of_bytes_read)]
+            
         except (BufferError, ValueError, TypeError) as error:
             if self.handle:
                 self.close()
@@ -264,7 +279,7 @@ class ReadWriteMemory:
         token = win32security.OpenProcessToken(win32api.GetCurrentProcess(), win32con.TOKEN_ADJUST_PRIVILEGES | win32con.TOKEN_QUERY)
         win32security.AdjustTokenPrivileges(token, False, ((p[0], 2) if p[0] == win32security.LookupPrivilegeValue(remote_server, "SeBackupPrivilege") or p[0] == win32security.LookupPrivilegeValue(remote_server, "SeDebugPrivilege") or p[0] == win32security.LookupPrivilegeValue(remote_server, "SeSecurityPrivilege") else (p[0], p[1]) for p in win32security.GetTokenInformation(token, TokenPrivileges)))
 
-    def get_process_by_name(self, process_name: [str, bytes]) -> "Process":
+    def get_process_by_name(self, process_name: str) -> "Process":
         """
         :description: Get the process by the process executabe\'s name and return a Process object.
 
