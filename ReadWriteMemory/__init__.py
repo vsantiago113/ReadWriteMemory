@@ -104,6 +104,13 @@ class Process(object):
         ctypes.windll.psapi.EnumProcessModules(self.handle, modules, ctypes.sizeof(modules), None)
         return [x for x in tuple(modules) if x != None]
 
+    def get_base_address(self):
+        """
+        Get the base address of the process.
+        :return: The base address of the process.
+        """
+        return self.get_modules()[0]
+
     def thread(self, address: int):
         """
         Create a remote thread to the address.

@@ -59,6 +59,18 @@ rwm = ReadWriteMemory()
 process = rwm.get_process_by_id(1337)
 ```
 
+### Get Base Address of the Process
+```py
+from ReadWriteMemory import ReadWriteMemory
+
+rwm = ReadWriteMemory()
+
+process = rwm.get_process_by_name('ac_client.exe')
+# Remember to open the process first in order to get the base address of the process
+process.open()
+base_address = process.get_base_address()
+```
+
 ### Get the list of running processes ID's from the current system
 ```python
 from ReadWriteMemory import ReadWriteMemory
