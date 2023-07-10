@@ -193,6 +193,30 @@ class Process(object):
                      'Name': self.name, 'ErrorCode': self.error_code}
             ReadWriteMemoryError(error)
 
+    def readDouble(self, lp_base_address: int) -> Any:
+        """
+        Read data from the process's memory.
+
+        :param lp_base_address: The process's pointer
+
+        :return: The data from the process's memory if succeed if not raises an exception.
+        """
+        try:
+            read_buffer = ctypes.c_double()
+            lp_buffer = ctypes.byref(read_buffer)
+            n_size = ctypes.sizeof(read_buffer)
+            lp_number_of_bytes_read = ctypes.c_ulong(0)
+            ctypes.windll.kernel32.ReadProcessMemory(self.handle, ctypes.c_void_p(lp_base_address), lp_buffer,
+                                                     n_size, lp_number_of_bytes_read)
+            return read_buffer.value
+        except (BufferError, ValueError, TypeError) as error:
+            if self.handle:
+                self.close()
+            self.error_code = self.get_last_error()
+            error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
+                     'Name': self.name, 'ErrorCode': self.error_code}
+            ReadWriteMemoryError(error)
+    
     def write(self, lp_base_address: int, value: int) -> bool:
         """
         Write data to the process's memory.
@@ -218,6 +242,31 @@ class Process(object):
                      'Name': self.name, 'ErrorCode': self.error_code}
             ReadWriteMemoryError(error)
 
+    def writeDouble(self, lp_base_address: int, value: int) -> bool:
+        """
+        Write data to the process's memory.
+
+        :param lp_base_address: The process' pointer.
+        :param value: The data to be written to the process's memory
+
+        :return: It returns True if succeed if not it raises an exception.
+        """
+        try:
+            write_buffer = ctypes.c_double(value)
+            lp_buffer = ctypes.byref(write_buffer)
+            n_size = ctypes.sizeof(write_buffer)
+            lp_number_of_bytes_written = ctypes.c_ulong(0)
+            ctypes.windll.kernel32.WriteProcessMemory(self.handle, ctypes.c_void_p(lp_base_address), lp_buffer,
+                                                      n_size, lp_number_of_bytes_written)
+            return True
+        except (BufferError, ValueError, TypeError) as error:
+            if self.handle:
+                self.close()
+            self.error_code = self.get_last_error()
+            error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
+                     'Name': self.name, 'ErrorCode': self.error_code}
+            ReadWriteMemoryError(error)
+    
     def writeString(self, lp_base_address: int, string: str) -> bool:
         """
         Write data to the process's memory.
