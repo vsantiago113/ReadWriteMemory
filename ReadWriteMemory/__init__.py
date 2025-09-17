@@ -142,7 +142,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
 
     def readString(self, lp_base_address: int, length: int) -> Any:
         """
@@ -169,7 +169,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
 
     def readByte(self, lp_base_address: int, length: int = 1) -> List[hex]:
         """
@@ -191,7 +191,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
 
     def readDouble(self, lp_base_address: int) -> Any:
         """
@@ -215,7 +215,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
     
     def write(self, lp_base_address: int, value: int) -> bool:
         """
@@ -240,7 +240,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
 
     def writeDouble(self, lp_base_address: int, value: float) -> bool:
         """
@@ -265,7 +265,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
     
     def writeString(self, lp_base_address: int, string: str) -> bool:
         """
@@ -290,7 +290,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
 
     def writeByte(self, lp_base_address: int, bytes: List[hex]) -> bool:
         """
@@ -314,7 +314,7 @@ class Process(object):
             self.error_code = self.get_last_error()
             error = {'msg': str(error), 'Handle': self.handle, 'PID': self.pid,
                      'Name': self.name, 'ErrorCode': self.error_code}
-            ReadWriteMemoryError(error)
+            raise ReadWriteMemoryError(error)
 
 class ReadWriteMemory:
     """
